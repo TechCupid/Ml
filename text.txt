@@ -1,0 +1,2 @@
+Ths is a smple txt file with sme misspelled wrds.
+It shuld help yu test the spelchecker functonality.
