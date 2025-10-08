@@ -1,18 +1,32 @@
-from sklearn import datasets, svm
-from skimage.feature import hog
-import cv2
+letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-# Load digit dataset
-digits = datasets.load_digits()
-features = [hog(img, pixels_per_cell=(4, 4), cells_per_block=(2, 2)) for img in digits.images]
+choice = input("Type 'E' to encrypt or 'D' to decrypt: ").strip().upper()
 
-# Train SVM
-clf = svm.SVC()
-clf.fit(features, digits.target)
+if choice == 'E':
+    msg = input("Enter the message to encrypt: ").upper()
+    
+    encrypted_nums = []
+    
+    for char in msg:
+        if char in letters:
+            position = letters.index(char)
+            position = (position + 3) % 26
+            encrypted_nums.append(position)
 
-# Predict from image
-img_path = input("Enter image path:\n> ").strip()
-img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
-img = cv2.resize(img, (8, 8))
-hog_feat = hog(img, pixels_per_cell=(4, 4), cells_per_block=(2, 2))
-print("Predicted Digit:", clf.predict([hog_feat])[0])
+    print("Encrypted numeric values:", encrypted_nums)
+
+elif choice == 'D':
+    nums_str = input("Enter numeric values separated by spaces: ").strip()
+    nums = [int(n) for n in nums_str.split()]
+    
+    decrypted_msg = ""
+    
+    for num in nums:
+        pos = (num - 3) % 26
+        char = letters[pos]
+        decrypted_msg += char
+        
+    print("Decrypted message:", decrypted_msg)
+
+else:
+    print("Invalid choice. Please select 'E' or 'D'.")
