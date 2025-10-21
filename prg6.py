@@ -1,23 +1,21 @@
-from textblob import TextBlob
+from pandas import DataFrame;
+from sklearn.cluster import KMeans;
+import matplotlib.pyplot as plt;
 
-file_path = input("Enter the full path to your text file: ")
+data={'x':[1,56,76,87,93],'y':[2,5,7,23,36]}
 
-try:
-    with open(file_path, "r") as f:
-        content = f.read()
-    print("\n=>File loaded successfully.\n")
-except IOError as e:
-    print(f"=>Could not open the file: {e}")
-    exit()
 
-corrected = TextBlob(content).correct()
+df=DataFrame(data,columns=['x','y']);
+plt.title("Before Clustering");
+plt.scatter(df['x'],df['y']);
+plt.show();
 
-print("=>Original Text:\n")
-print(content)
-print("\n=>Corrected Text:\n")
-print(corrected)
+a=int(input("How Many Clusters Do You need to implement?:"));
+b=KMeans(a).fit(df);
+centroids=b.cluster_centers_;
+print(centroids);
 
-with open("corrected_output.txt", "w") as f:
-    f.write(str(corrected))
-
-print("\n=>Corrected text saved as 'corrected_output.txt' in same folder.")
+plt.title("After Clustering");
+plt.scatter(df['x'],df['y'],c=b.labels_);
+plt.scatter(centroids[:,0],centroids[:,-1],c='red');
+plt.show();

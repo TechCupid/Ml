@@ -1,21 +1,20 @@
-import pandas as pd
-def get_date_from_user(prompt):
-    while True:
-        try: return pd.to_datetime(input(prompt))
-        except: print("Use YYYY-MM-DD format.")
+import pandas as pd;
+from sklearn.feature_extraction.text import (CountVectorizer,TfidfVectorizer,TfidfTransformer);
 
-start_date = get_date_from_user("\n =>Enter the start date (YYYY-MM-DD): ")
-end_date = get_date_from_user("\n =>Enter the end date (YYYY-MM-DD): ")
+data={"apple bag virus","bag cat party","apple party"};
 
-df = pd.DataFrame({'date': pd.date_range(start=start_date, end=end_date)})
+cv=CountVectorizer();
+bow=cv.fit_transform(data);
+print("\n Back of Words\n")
+print(bow.toarray());
+print("\nBack of Words Features\n")
+print(cv.get_feature_names_out());
+print(cv.vocabulary_);
 
-print("\n Extracting features from date data...")
-df["year"] = df["date"].dt.year
-df["month"] = df["date"].dt.month
-df["day_of_month"] = df["date"].dt.day
-df["day_of_week"] = df["date"].dt.dayofweek
-df["is_weekend"] = df["day_of_week"].isin([5, 6]).astype(int)
-df["day_name"] = df["date"].dt.day_name()
-
-print("\n =>Extracted Features DataFrame\n ")
-print(df)
+tv=TfidfVectorizer();
+bow=tv.fit_transform(data);
+print("\nTfidf Vectors\n")
+print(bow.toarray());
+print("\nTfidf Vector Features\n")
+print(tv.get_feature_names_out());
+print(tv.vocabulary_);
