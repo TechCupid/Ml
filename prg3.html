@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact Form - JS Validation</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial;
+      background-color: grey;
+    }
+    form {
+      margin: 50px auto;
+      padding: 25px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      width: 400px;
+    }
+    form h2 {
+      text-align: center;
+    }
+    form label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    form input,
+    form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid black;
+      border-radius: 5px;
+    }
+    form button {
+      width: 100%;
+      padding: 10px;
+      background-color: blue;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    function validateForm() {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      const namePattern = /^[A-Za-z\s]+$/;
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
+
+      if (name === "") {
+        alert("Please enter your name.");
+        return false;
+      } else if (!name.match(namePattern)) {
+        alert("Name should contain only letters and spaces.");
+        return false;
+      }
+
+      if (email === "") {
+        alert("Please enter your email.");
+        return false;
+      } else if (!email.match(emailPattern)) {
+        alert("Please enter a valid email address.");
+        return false;
+      }
+
+      if (message === "") {
+        alert("Please enter your message.");
+        return false;
+      }
+
+      return true;
+    }
+  </script>
+</head>
+<body>
+  <form onsubmit="return validateForm();">
+    <h2>Contact Us</h2>
+
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email">
+
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="4"></textarea>
+
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<?php
+// Handle form submission
+$name = $email = $message = "";
+$errors = [];
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = trim($_POST["name"] ?? '');
+    $email = trim($_POST["email"] ?? '');
+    $message = trim($_POST["message"] ?? '');
+
+    // Validate name (letters and spaces only)
+    if (empty($name)) {
+        $errors[] = "Name is required.";
+    } elseif (!preg_match("/^[A-Za-z\s]+$/", $name)) {
+        $errors[] = "Name should contain only letters and spaces.";
+    }
+
+    // Validate email
+    if (empty($email)) {
+        $errors[] = "Email is required.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Invalid email format.";
+    }
+
+    // Validate message
+    if (empty($message)) {
+        $errors[] = "Message is required.";
+    }
+
+    // If no errors, show success
+    if (empty($errors)) {
+        echo "<p style='color:green;'>Form submitted successfully!</p>";
+        // You can add email sending or database logic here
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact Form - PHP Validation</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: Arial; background-color: grey; }
+    form {
+      margin: 50px auto;
+      padding: 25px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      width: 400px;
+    }
+    form h2 { text-align: center; }
+    form label { display: block; margin-bottom: 5px; font-weight: bold; }
+    form input, form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid black;
+      border-radius: 5px;
+    }
+    form button {
+      width: 100%;
+      padding: 10px;
+      background-color: blue;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .error { color: red; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <form method="POST">
+    <h2>Contact Us</h2>
+
+    <?php
+    if (!empty($errors)) {
+        foreach ($errors as $error) {
+            echo "<div class='error'>$error</div>";
+        }
+    }
+    ?>
+
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" value="<?= htmlspecialchars($name) ?>">
+
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" value="<?= htmlspecialchars($email) ?>">
+
+    <label for="message">Message</label>
+    <textarea name="message" id="message" rows="4"><?= htmlspecialchars($message) ?></textarea>
+
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
